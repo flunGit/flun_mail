@@ -1,0 +1,78 @@
+{
+  "name": "flun-mail",
+  "version": "2.0.8",
+  "description": "A powerful and flexible email sending library for Node.js with multiple transport support (SMTP, SMTP Pool, Sendmail, Stream, JSON, SES)",
+  "main": "index.js",
+  "type": "commonjs",
+  "scripts": {
+    "postinstall": "node install.js 2>&1",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "dev": "node --watch index.js",
+    "lint": "eslint .",
+    "build": "echo 'No build process required'"
+  },
+  "bin": {
+    "flun-mail-init": "./install.js",
+    "flun-mail": "./index.js"
+  },
+  "files": [
+    "index.js",
+    "index.d.ts",
+    "lib/",
+    "install.js",
+    "CHANGELOG.md",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "mail",
+    "email",
+    "flun",
+    "smtp",
+    "sendmail",
+    "ses",
+    "aws",
+    "transport",
+    "smtp-pool",
+    "email-sender",
+    "mailer"
+  ],
+  "author": "flun <cn@flun.top>",
+  "contributors": [
+    "flun <cn@flun.top>"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/flunGit/flun_mail"
+  },
+  "homepage": "https://www.npmjs.com/package/flun-mail#readme",
+  "bugs": {
+    "url": "https://github.com/flunGit/flun_mail/issues",
+    "email": "cn@flun.top"
+  },
+  "license": "ISC",
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=6.0.0"
+  },
+  "dependencies": {
+    "@aws-sdk/client-sesv2": "^3.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.56.0",
+    "jest": "^29.7.0"
+  },
+  "peerDependencies": {
+    "node": ">=16.0.0"
+  },
+  "directories": {
+    "lib": "lib",
+    "example": "examples",
+    "test": "tests"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  }
+}
