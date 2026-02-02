@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "commonjs",
   "scripts": {
-    "postinstall": "node install.js 2>&1",
+    "postinstall": "node copy-files.js 2>&1",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
     "dev": "node --watch index.js",
@@ -13,14 +13,15 @@
     "build": "echo 'No build process required'"
   },
   "bin": {
-    "flun-mail-init": "./install.js",
+    "flun-mail-init": "./copy-files.js",
     "flun-mail": "./index.js"
   },
   "files": [
     "index.js",
     "index.d.ts",
     "lib/",
-    "install.js",
+    "copy-files.js",
+    "Mail.js",
     "CHANGELOG.md",
     "README.md",
     "LICENSE"
