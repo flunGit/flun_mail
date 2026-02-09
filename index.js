@@ -12,14 +12,10 @@
  * - SesTransport: Amazon SES传输器，通过AWS Simple Email Service发送邮件
  * - shared: 共享工具函数模块，包含URL解析,正则常量等通用功能
  */
-const Mailer = require('./lib/mailer');
-const SmtpPool = require('./lib/smtp-pool');
-const SmtpTransport = require('./lib/smtp-transport');
-const SendmailTransport = require('./lib/sendmail-transport');
-const StreamTransport = require('./lib/stream-transport');
-const JsonTransport = require('./lib/json-transport');
-const SesTransport = require('./lib/ses-transport');
-const { parseConnectionUrl, regexs } = require('./lib/shared');
+const Mailer = require('./lib/mailer'), SmtpPool = require('./lib/smtp-pool'),
+    SmtpTransport = require('./lib/smtp-transport'), SendmailTransport = require('./lib/sendmail-transport'),
+    StreamTransport = require('./lib/stream-transport'), JsonTransport = require('./lib/json-transport'),
+    SesTransport = require('./lib/ses-transport'), { parseConnectionUrl, regexs } = require('./lib/shared');
 
 // 创建传输器
 function createTransport(transporter, defaults) {
@@ -78,7 +74,7 @@ function validateConfig(config) {
 
             if (auth) {
                 if (!auth.user) errors.push('认证配置中缺少 user 字段');
-                if (!auth.pass && !auth.oauth2 && !auth.xoauth2) warnings.push('认证配置中缺少 pass 字段，将尝试无密码连接');
+                if (!auth.pass && !auth.oauth2 && !auth.xoauth2) warnings.push('(pass,oauth2,xoauth2)都无配置,将尝试无密码连接');
             }
             // 非25端口通常需要认证
             else if (port !== 25) warnings.push('未提供认证信息，某些邮件服务器可能拒绝连接');

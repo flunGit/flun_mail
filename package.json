@@ -4,6 +4,7 @@
   "description": "A powerful and flexible email sending library for Node.js with multiple transport support (SMTP, SMTP Pool, Sendmail, Stream, JSON, SES)",
   "main": "index.js",
   "type": "commonjs",
+  "types": "index.d.ts",
   "scripts": {
     "postinstall": "node copy-files.js 2>&1",
     "test": "echo \"Error: no test specified\" && exit 1",
