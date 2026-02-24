@@ -14,8 +14,8 @@
     "build": "echo 'No build process required'"
   },
   "bin": {
-    "flun-mail-init": "./copy-files.js",
-    "flun-mail": "./index.js"
+    "flun-mail-init": "copy-files.js",
+    "flun-mail": "index.js"
   },
   "files": [
     "index.js",
