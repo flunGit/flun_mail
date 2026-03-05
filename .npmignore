@@ -4,7 +4,8 @@
 .gitattributes
 publish.ps1
 .npmrc
-
+# 排除 GitHub 相关目录
+.github/
 # 忽略IDE文件
 .idea/
 .vscode/
