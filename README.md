@@ -22,7 +22,7 @@ graph TD
 
 ## 安装
 
-```bash
+```sh
 npm i flun-mail
 ```
 
