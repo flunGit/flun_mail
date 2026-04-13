@@ -9,11 +9,11 @@
  *   -
  * ```js
  *  // 发送邮件示例
- *  const mail = require('flun-mail'),
- *  { env } = require('flun-env'), // 注意:flun-env需自行安装
+ *  import { createTransport } from ('flun-mail');
+ *  import { env } from ('flun-env'); // 注意:flun-env需自行安装
  *
  *  // 请根据您的邮箱服务商修改以下配置
- *  transporter = mail.createTransport({
+ *  transporter = createTransport({
  *      host: 'smtp.189.cn',  // 邮箱服务商SMTP服务器地址
  *      port: 465,            // 端口号
  *      secure: true,         // 是否使用SSL/TLS

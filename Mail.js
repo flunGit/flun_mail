@@ -44,4 +44,4 @@ transporter.sendMail({
 // }
 // }
 
-module.exports = transporter; // 导出transporter以便在其他文件中使用
+module.exports = { transporter }; // 导出transporter以便在其他文件中使用

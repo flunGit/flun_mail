@@ -12,10 +12,14 @@
  * - SesTransport: Amazon SES传输器，通过AWS Simple Email Service发送邮件
  * - shared: 共享工具函数模块，包含URL解析,正则常量等通用功能
  */
-const Mailer = require('./lib/mailer'), SmtpPool = require('./lib/smtp-pool'),
-    SmtpTransport = require('./lib/smtp-transport'), SendmailTransport = require('./lib/sendmail-transport'),
-    StreamTransport = require('./lib/stream-transport'), JsonTransport = require('./lib/json-transport'),
-    SesTransport = require('./lib/ses-transport'), { parseConnectionUrl, regexs } = require('./lib/shared');
+import { Mailer } from './lib/mailer/index.js';
+import { SmtpPool } from './lib/smtp-pool/index.js';// SesTransport
+import { SmtpTransport } from './lib/smtp-transport.js';
+import { SendmailTransport } from './lib/sendmail-transport.js';
+import { StreamTransport } from './lib/stream-transport.js';
+import { JsonTransport } from './lib/json-transport.js';
+import { SesTransport } from './lib/ses-transport.js';
+import { parseConnectionUrl, regexs } from './lib/shared.js';
 
 // 创建传输器
 function createTransport(transporter, defaults) {
@@ -105,4 +109,4 @@ function validateConfig(config) {
 }
 
 // 导出
-module.exports = { createTransport, validateConfig };
+export { createTransport, validateConfig };

@@ -2,8 +2,11 @@
   "name": "flun-mail",
   "version": "2.0.11",
   "description": "A powerful and flexible email sending library for Node.js with multiple transport support (SMTP, SMTP Pool, Sendmail, Stream, JSON, SES)",
+  "type": "module",
+  "exports": {
+    ".": "./index.js"
+  },
   "main": "index.js",
-  "type": "commonjs",
   "types": "index.d.ts",
   "scripts": {
     "postinstall": "node copy-files.js 2>&1",
@@ -55,8 +58,8 @@
   },
   "license": "ISC",
   "engines": {
-    "node": ">=16.0.0",
-    "npm": ">=6.0.0"
+    "node": ">=22.12.0",
+    "npm": ">=10.0.0"
   },
   "dependencies": {
     "@aws-sdk/client-sesv2": "^3.0.0"

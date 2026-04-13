@@ -1,6 +1,7 @@
 # flun-mail - 轻量级邮件发送库
 
-一个简单易用的 Node.js 邮件发送库，支持多种邮件服务商，无需依赖外部邮件测试服务。
+一个简单易用的 Node.js 邮件发送库,支持多种邮件服务商,无需依赖外部邮件测试服务;
+### 本包以 ESM 模块系统编写->未来趋势;只要你的 Node.js 版本大于22.12,可保留CJS `require()` 语法调用,否则请使用 `import` 语法;
 
 ## 项目运行导图
 
@@ -40,10 +41,10 @@ npm i flun-mail
 ### 邮件配置及发送(标准配置示例)
 
 ```javascript
-const mail = require('flun-mail');
+import { createTransport } from ('flun-mail');
 
 // 邮箱配置示例 - 请根据您的邮箱服务商修改以下配置
-const transporter = mail.createTransport({
+const transporter = createTransport({
 
     // 邮箱服务商SMTP服务器地址(Gmail: 'smtp.gmail.com'; QQ: 'smtp.qq.com'; 163: 'smtp.163.com')
     host: 'smtp.your-email-provider.com',
@@ -79,7 +80,7 @@ transporter.sendMail({
 
 #### Gmail
 ```javascript
-const transporter = mail.createTransport({
+const transporter = createTransport({
     service: 'Gmail',
     auth: {
         user: 'your-email@gmail.com',
@@ -90,7 +91,7 @@ const transporter = mail.createTransport({
 
 #### QQ邮箱
 ```javascript
-const transporter = mail.createTransport({
+const transporter = createTransport({
      service: 'QQ',
     auth: {
         user: 'your-email@qq.com',
@@ -101,7 +102,7 @@ const transporter = mail.createTransport({
 
 #### 163邮箱
 ```javascript
-const transporter = mail.createTransport({
+const transporter = createTransport({
     service: '163',
     auth: {
         user: 'your-email@163.com',
@@ -117,11 +118,11 @@ const transporter = mail.createTransport({
 ### 验证配置示例
 
 ```javascript
-const mail = require('flun-mail');
+import { validateConfig } from('flun-mail');
 
 // 1. 验证URL格式配置
 const urlConfig = 'smtps://user:pass@smtp.your-email-provider.com:465';
-const validation1 = mail.validateConfig(urlConfig);
+const validation1 = validateConfig(urlConfig);
 if (!validation1.valid) {
     console.error('配置错误:', validation1.errors);
 } else if (validation1.warnings) {
@@ -138,9 +139,9 @@ const objectConfig = {
         pass: 'password'
     }
 };
-const validation2 = mail.validateConfig(objectConfig);
+const validation2 = validateConfig(objectConfig);
 if (validation2.valid) {
-    const transporter = mail.createTransport(objectConfig);
+    const transporter = createTransport(objectConfig);
     console.log('传输器创建成功');
 } else {
     console.error('配置无效，无法创建传输器:', validation2.errors);
@@ -155,7 +156,7 @@ const invalidConfig = {
         // 缺少密码
     }
 };
-const validation3 = mail.validateConfig(invalidConfig);
+const validation3 = validateConfig(invalidConfig);
 console.log('无效配置验证结果:', validation3);
 ```
 
@@ -212,10 +213,10 @@ sendEmail();
 ## 1. SMTP 连接池（高并发场景）
 
 ```javascript
-const mail = require('flun-mail');
+import { createTransport } from('flun-mail');
 
 // 1. 创建连接池传输器
-const transporter = mail.createTransport({
+const transporter = createTransport({
   pool: true, // 启用连接池
   host: 'smtp.gmail.com',
   port: 465,
@@ -264,10 +265,10 @@ sendBulkEmails();
 ## 2. Sendmail 传输（Linux/Unix 系统）
 
 ```javascript
-const mail = require('flun-mail');
+import { createTransport } from('flun-mail');
 
 // 1. 创建Sendmail传输器
-const transporter = mail.createTransport({
+const transporter = createTransport({
   sendmail: true,
   path: '/usr/sbin/sendmail' // 默认路径，通常不需要指定
 });
@@ -295,11 +296,11 @@ transporter.sendMail(mailOptions, (error, info) => {
 ## 3. 流传输（用于测试和开发）
 
 ```javascript
-const mail = require('flun-mail');
-const fs = require('fs');
+import { createTransport } from ('flun-mail');
+import fs from ('fs');
 
 // 1. 创建流传输器
-const transporter = mail.createTransport({
+const transporter = createTransport({
   streamTransport: true,
   buffer: true,        // 将邮件内容缓冲到内存
   newline: 'unix'      // 使用Unix换行符
@@ -338,10 +339,10 @@ transporter.sendMail(mailOptions, (error, info) => {
 ## 4. JSON 传输（用于调试）
 
 ```javascript
-const mail = require('flun-mail');
+import { createTransport } from ('flun-mail');
 
 // 1. 创建JSON传输器
-const transporter = mail.createTransport({
+const transporter = createTransport({
   jsonTransport: true
 });
 
@@ -373,8 +374,8 @@ transporter.sendMail(mailOptions, (error, info) => {
 ## 5. SES 传输（AWS 亚马逊服务）
 
 ```javascript
-const mail = require('flun-mail');
-const { SESClient } = require('@aws-sdk/client-ses');
+import { createTransport } from ('flun-mail');
+import { SESClient } from ('@aws-sdk/client-ses');
 
 // 1. 配置 AWS SES
 const sesClient = new SESClient({
@@ -386,7 +387,7 @@ const sesClient = new SESClient({
 });
 
 // 2. 创建SES传输器
-const transporter = mail.createTransport({
+const transporter = createTransport({
   SES: {
     ses: sesClient,
     aws: {}
@@ -420,10 +421,10 @@ sendWithSES();
 ## 6. 使用连接字符串的简便方式
 
 ```javascript
-const mail = require('flun-mail');
+import { createTransport } from ('flun-mail');
 
 // 1. 使用连接字符串创建传输器
-const transporter = mail.createTransport(
+const transporter = createTransport(
   'smtps://username:password@smtp.gmail.com:465'
 );
 
