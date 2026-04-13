@@ -1,10 +1,15 @@
-const fs = require('fs'), path = require('path'),
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-    // 要复制的文件位置和文件目标位置
-    packageDir = __dirname, targetDir = path.resolve(packageDir, '../..'), fileName = 'Mail.js',
+// 获取当前文件所在目录（相当于 __dirname）
+const __filename = fileURLToPath(import.meta.url), __dirname = path.dirname(__filename),
 
-    // 要拷贝的文件和目标文件路径
-    sourceFile = path.join(packageDir, fileName), targetFile = path.join(targetDir, fileName);
+    // 要拷贝和写入的文件名和目标（项目根目录）
+    fileName = 'Mail.js', targetDir = path.resolve(__dirname, '../..'),
+
+    // 源文件和目标文件路径
+    sourceFile = path.join(__dirname, fileName), targetFile = path.join(targetDir, fileName);
 
 function copyFile() {
     console.log(`🔍 检查 ${fileName} 文件...`), console.log(`📁 项目根目录:${targetDir}`);
@@ -22,5 +27,5 @@ function copyFile() {
 }
 
 // 执行脚本并导出函数
-if (require.main === module) copyFile();
-module.exports = { copyFile };
+if (process.argv[1] === __filename) copyFile();
+export { copyFile };
