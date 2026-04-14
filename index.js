@@ -13,7 +13,7 @@
  * - shared: 共享工具函数模块，包含URL解析,正则常量等通用功能
  */
 import { Mailer } from './lib/mailer/index.js';
-import { SmtpPool } from './lib/smtp-pool/index.js';// SesTransport
+import { SmtpPool } from './lib/smtp-pool/index.js';
 import { SmtpTransport } from './lib/smtp-transport.js';
 import { SendmailTransport } from './lib/sendmail-transport.js';
 import { StreamTransport } from './lib/stream-transport.js';
@@ -37,7 +37,7 @@ function createTransport(transporter, defaults) {
         else if (options.jsonTransport) transporter = new JsonTransport(options);
         else if (options.SES) {
             if (options.SES.ses && options.SES.aws) {
-                let error = new Error('检测到旧版SES配置，请使用@aws-sdk/client-sesv2，');
+                let error = new Error('检测到旧版SES配置,请使用@aws-sdk/client-sesv2');
                 error.code = 'LegacyConfig';
                 throw error;
             }
