@@ -1,4 +1,3 @@
-'use strict';
 /**
  * mailer 主模块
  *
@@ -108,5 +107,4 @@ function validateConfig(config) {
     return { valid: errors.length === 0, errors, warnings: warnings.length > 0 ? warnings : undefined };
 }
 
-// 导出
 export { createTransport, validateConfig };
