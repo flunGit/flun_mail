@@ -1,7 +1,7 @@
 
-const mail = require('flun-mail');
+import { createTransport } from 'flun-mail';
 // 邮箱配置示例 - 请根据您的邮箱服务商修改以下配置
-const transporter = mail.createTransport({
+const transporter = createTransport({
     // 步骤1:填写服务器地址,端口和是否启用SSL/TLS
     // 常见邮箱填写服务商名称(如:Gmail, QQ; 163,139等等)或域名后缀即可
     service: 'your-email-provider',
@@ -44,4 +44,4 @@ transporter.sendMail({
 // }
 // }
 
-module.exports = { transporter }; // 导出transporter以便在其他文件中使用
+export { transporter }; // 导出transporter以便在其他文件中使用

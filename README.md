@@ -41,7 +41,7 @@ npm i flun-mail
 ### 邮件配置及发送(标准配置示例)
 
 ```javascript
-import { createTransport } from ('flun-mail');
+import { createTransport } from 'flun-mail';
 
 // 邮箱配置示例 - 请根据您的邮箱服务商修改以下配置
 const transporter = createTransport({
@@ -118,7 +118,7 @@ const transporter = createTransport({
 ### 验证配置示例
 
 ```javascript
-import { validateConfig } from('flun-mail');
+import { validateConfig } from 'flun-mail';
 
 // 1. 验证URL格式配置
 const urlConfig = 'smtps://user:pass@smtp.your-email-provider.com:465';
@@ -213,7 +213,7 @@ sendEmail();
 ## 1. SMTP 连接池（高并发场景）
 
 ```javascript
-import { createTransport } from('flun-mail');
+import { createTransport } from 'flun-mail';
 
 // 1. 创建连接池传输器
 const transporter = createTransport({
@@ -265,7 +265,7 @@ sendBulkEmails();
 ## 2. Sendmail 传输（Linux/Unix 系统）
 
 ```javascript
-import { createTransport } from('flun-mail');
+import { createTransport } from 'flun-mail';
 
 // 1. 创建Sendmail传输器
 const transporter = createTransport({
@@ -296,8 +296,8 @@ transporter.sendMail(mailOptions, (error, info) => {
 ## 3. 流传输（用于测试和开发）
 
 ```javascript
-import { createTransport } from ('flun-mail');
-import fs from ('fs');
+import { createTransport } from 'flun-mail';
+import fs from 'fs';
 
 // 1. 创建流传输器
 const transporter = createTransport({
@@ -339,7 +339,7 @@ transporter.sendMail(mailOptions, (error, info) => {
 ## 4. JSON 传输（用于调试）
 
 ```javascript
-import { createTransport } from ('flun-mail');
+import { createTransport } from 'flun-mail';
 
 // 1. 创建JSON传输器
 const transporter = createTransport({
@@ -374,8 +374,8 @@ transporter.sendMail(mailOptions, (error, info) => {
 ## 5. SES 传输（AWS 亚马逊服务）
 
 ```javascript
-import { createTransport } from ('flun-mail');
-import { SESClient } from ('@aws-sdk/client-ses');
+import { createTransport } from 'flun-mail';
+import { SESClient } from '@aws-sdk/client-ses';
 
 // 1. 配置 AWS SES
 const sesClient = new SESClient({
@@ -421,7 +421,7 @@ sendWithSES();
 ## 6. 使用连接字符串的简便方式
 
 ```javascript
-import { createTransport } from ('flun-mail');
+import { createTransport } from 'flun-mail';
 
 // 1. 使用连接字符串创建传输器
 const transporter = createTransport(

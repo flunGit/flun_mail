@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-// 获取当前文件所在目录（相当于 __dirname）
+// 获取当前文件所在目录
 const __filename = fileURLToPath(import.meta.url), __dirname = path.dirname(__filename),
 
     // 要拷贝和写入的文件名和目标（项目根目录）

@@ -9,8 +9,8 @@
  *   -
  * ```js
  *  // 发送邮件示例
- *  import { createTransport } from ('flun-mail');
- *  import { env } from ('flun-env'); // 注意:flun-env需自行安装
+ *  import { createTransport } from 'flun-mail';
+ *  import { env } from 'flun-env'; // 注意:flun-env需自行安装
  *
  *  // 请根据您的邮箱服务商修改以下配置
  *  transporter = createTransport({
