@@ -21,7 +21,7 @@ import { SesTransport } from './lib/ses-transport.js';
 import { parseConnectionUrl, regexs } from './lib/shared.js';
 
 // 创建传输器
-function createTransport(transporter, defaults) {
+const createTransport = (transporter, defaults) => {
     const urlConfig = typeof transporter === 'string' ? transporter : transporter.url;
     let options;
 
@@ -47,64 +47,63 @@ function createTransport(transporter, defaults) {
 
     const mailer = new Mailer(transporter, options, defaults);
     return mailer;
-}
+},
+    // 验证配置
+    validateConfig = config => {
+        const errors = [], warnings = [];
 
-// 验证配置
-function validateConfig(config) {
-    const errors = [], warnings = [];
+        // 检查配置类型
+        if (!config) {
+            errors.push('配置不能为空');
+            return { valid: false, errors, warnings };
+        }
+        const { host, service, auth, port, secure, tls, pool, maxConnections, maxMessages, sendmail, SES } = config;
 
-    // 检查配置类型
-    if (!config) {
-        errors.push('配置不能为空');
-        return { valid: false, errors, warnings };
-    }
-    const { host, service, auth, port, secure, tls, pool, maxConnections, maxMessages, sendmail, SES } = config;
+        // 如果是字符串（URL格式）
+        if (typeof config === 'string' && !regexs.TRANSPORTER_PROTOCOL.test(config))
+            errors.push('URL格式不正确，应以 smtp://, smtps:// 或 direct:// 开头');
+        // 否则,如果是配置对象
+        else if (typeof config === 'object') {
+            // 检查传输器类型
+            const transportTypes = ['SMTP', 'Sendmail', 'Stream', 'JSON', 'SES'],
+                hasTransportType = transportTypes.some(type =>
+                    config[type.toLowerCase()] || config[type] || config[`${type}Transport`]
+                );
 
-    // 如果是字符串（URL格式）
-    if (typeof config === 'string' && !regexs.TRANSPORTER_PROTOCOL.test(config))
-        errors.push('URL格式不正确，应以 smtp://, smtps:// 或 direct:// 开头');
-    // 否则,如果是配置对象
-    else if (typeof config === 'object') {
-        // 检查传输器类型
-        const transportTypes = ['SMTP', 'Sendmail', 'Stream', 'JSON', 'SES'],
-            hasTransportType = transportTypes.some(type =>
-                config[type.toLowerCase()] || config[type] || config[`${type}Transport`]
-            );
+            if (!hasTransportType && typeof config.send !== 'function') {
+                // 默认为SMTP传输器，验证SMTP相关配置
+                if (!host && !service) errors.push('必须指定 host 或 service');
 
-        if (!hasTransportType && typeof config.send !== 'function') {
-            // 默认为SMTP传输器，验证SMTP相关配置
-            if (!host && !service) errors.push('必须指定 host 或 service');
+                if (auth) {
+                    if (!auth.user) errors.push('认证配置中缺少 user 字段');
+                    if (!auth.pass && !auth.oauth2 && !auth.xoauth2) warnings.push('(pass,oauth2,xoauth2)都无配置,将尝试无密码连接');
+                }
+                // 非25端口通常需要认证
+                else if (port !== 25) warnings.push('未提供认证信息，某些邮件服务器可能拒绝连接');
 
-            if (auth) {
-                if (!auth.user) errors.push('认证配置中缺少 user 字段');
-                if (!auth.pass && !auth.oauth2 && !auth.xoauth2) warnings.push('(pass,oauth2,xoauth2)都无配置,将尝试无密码连接');
+                if (port && (port < 1 || port > 65535)) errors.push('端口号应在 1-65535 范围内');
+                // 检查TLS/SSL配置
+                if (secure !== undefined && typeof secure !== 'boolean') errors.push('secure 字段应为布尔值');
+                if (tls !== undefined && typeof tls !== 'object' && typeof tls !== 'boolean') errors.push('tls 字段应为对象或布尔值');
             }
-            // 非25端口通常需要认证
-            else if (port !== 25) warnings.push('未提供认证信息，某些邮件服务器可能拒绝连接');
 
-            if (port && (port < 1 || port > 65535)) errors.push('端口号应在 1-65535 范围内');
-            // 检查TLS/SSL配置
-            if (secure !== undefined && typeof secure !== 'boolean') errors.push('secure 字段应为布尔值');
-            if (tls !== undefined && typeof tls !== 'object' && typeof tls !== 'boolean') errors.push('tls 字段应为对象或布尔值');
+            // 验证池配置
+            if (pool && typeof pool !== 'boolean') errors.push('pool 字段应为布尔值');
+            if (maxConnections && (typeof maxConnections !== 'number' || maxConnections < 1)) errors.push('maxConnections 应为大于0的数字');
+            if (maxMessages && (typeof maxMessages !== 'number' || maxMessages < 1)) errors.push('maxMessages 应为大于0的数字');
+
+            // 验证Sendmail配置
+            if (sendmail && sendmail !== true && typeof sendmail !== 'string') errors.push('sendmail 字段应为布尔值或字符串路径');
+
+            // 验证SES配置
+            if (SES) {
+                if (typeof SES !== 'object') errors.push('SES 配置应为对象');
+                else if (SES.ses && SES.aws) warnings.push('检测到旧版SES配置，建议使用新版AWS SDK');
+            }
         }
+        else errors.push('配置应为字符串或对象');
 
-        // 验证池配置
-        if (pool && typeof pool !== 'boolean') errors.push('pool 字段应为布尔值');
-        if (maxConnections && (typeof maxConnections !== 'number' || maxConnections < 1)) errors.push('maxConnections 应为大于0的数字');
-        if (maxMessages && (typeof maxMessages !== 'number' || maxMessages < 1)) errors.push('maxMessages 应为大于0的数字');
-
-        // 验证Sendmail配置
-        if (sendmail && sendmail !== true && typeof sendmail !== 'string') errors.push('sendmail 字段应为布尔值或字符串路径');
-
-        // 验证SES配置
-        if (SES) {
-            if (typeof SES !== 'object') errors.push('SES 配置应为对象');
-            else if (SES.ses && SES.aws) warnings.push('检测到旧版SES配置，建议使用新版AWS SDK');
-        }
-    }
-    else errors.push('配置应为字符串或对象');
-
-    return { valid: errors.length === 0, errors, warnings: warnings.length > 0 ? warnings : undefined };
-}
+        return { valid: errors.length === 0, errors, warnings: warnings.length > 0 ? warnings : undefined };
+    };
 
 export { createTransport, validateConfig };
